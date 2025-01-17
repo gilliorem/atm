@@ -60,20 +60,24 @@ void withdraw(struct user* account, unsigned int amount)
 	account->balance = account->balance - amount;
 }
 
+void display_menu()
+{
+	char c;
+	printf("Welcome, press 'Enter' to start.\n");
+	while ((c = getchar()) != EOF)
+	{
+		printf("Press 1 to withdraw.\n");
+		printf("Press 2 to deposit.\n");
+	}
+}
 int main()
 {
 	struct user remi;
 	remi.id = 1;
 	strcpy(remi.pin, "0000");
 	remi.balance = 0;
-	
-	printf("Remi's current balance : $%f \n", remi.balance);
-	deposit(&remi, 42);
-	printf("Remi's current balance : $%f \n", remi.balance);
 
-	withdraw(&remi, 40);
-	printf("Remi's current balance : $%f \n", remi.balance);
-
+	display_menu();
 	
 }
 
