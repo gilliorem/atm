@@ -1,0 +1,8 @@
+consider a program that check the pin of the user.
+
+pin[] = {
+"0000",
+"1234",
+"0123",
+
+
