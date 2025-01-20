@@ -121,7 +121,7 @@ int main()
 	struct user lisa;
 	lisa.id = 2;
 	strcpy(lisa.name, "Lisa");
-	strcpi(lisa.pin, "1234");
+	strcpy(lisa.pin, "1234");
 	lisa.balance = 0;
 	
 	struct user romain;
@@ -138,22 +138,9 @@ int main()
 	// on tente de se rendre au 1ere index users[0]
 	// on tente d'afficher le nom : users[0].name
 
-	for (int i = 0; i < 3; i++)
-	{
-		scanf("%d %s", &users[i].id, users[i].name);
-	}
-
-	for (int i = 0; i<3; i++)
-	{
-		printf("User id :%d \n User's Name : %s \n", users[i].id, users[i].name);
-	}
-
-
-//	printf("User Name : %s.\n", users[0].name);
-//	printf("Remi Name : %s. \n", remi.name);
+	printf("User Name : %s.\n", users[9].name);
 
 	//select(users, 1);
-	return 0;
 
 }
 
