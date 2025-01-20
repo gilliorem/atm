@@ -8,6 +8,8 @@ struct user {
 	float balance;
 }; 
 
+
+
 unsigned int set_id(struct user* account)
 {
 	unsigned int new_id;
@@ -23,7 +25,6 @@ unsigned int set_id(struct user* account)
 	return new_id;
 }
 
-
 void change_pin(struct user* account, char *new_pin)
 {
 	if (strlen(new_pin) != 4)
@@ -34,6 +35,15 @@ void change_pin(struct user* account, char *new_pin)
 	strcpy(account->pin, new_pin);
 }
 
+void change_name(struct user* account, char *new_name)
+{
+	if (strlen(new_name) <= 1)
+	{
+		printf("Enter a valid name.\n");
+		return;
+	}
+	strcpy(account->name, new_name);
+}
 
 void deposit(struct user* account, unsigned int amount)
 {
@@ -59,101 +69,54 @@ void withdraw(struct user* account, unsigned int amount)
 	}
 	account->balance = account->balance - amount;
 }
-void select(struct user users[], int n_user)
-{
-	for (int i = 0; i <= n_user; i++)
-	{
-		if (i == n_user)
-		{
-			printf("i : %d\n", i);
-			printf("User ID: %d\n", users[i].id);
-			printf("User Name : %s\n", users[i].name);
-		}
-	}
-}
-
 
 void display_menu()
 {
-	printf("Press Enter to start.\n");
-	char c;
-	while (c = getchar() != EOF)
-	{
-		int command;
-		printf("Main Menu: \n Press '1' to withdraw. \n Press '2' to deposit.\n");
-		scanf("%d", &command);
-		if (command == 1)
-		{
-			printf("withdraw\n");
-		}
-		if (command == 2)
-		{
-			printf("deposit\n");
-		}
-	}
+	
 }
 
-int verify_user_pin(struct user users[], char* pin)
+int verify_pin(struct user *users)
 {
-	int i = 0;
-	//users[user.pin] == pin
-	if (strcmp(users->pin, pin) == 0)
+	printf("Enter your PIN.\n");
+	char pin[4];
+	scanf("%s", pin);
+	printf("PIN ENTER: %s\n", pin);
+	for (int i = 0; i <= 3; i++)
 	{
-		printf("PIN Correct. \n");
-		return 1;
+		if (strcmp(pin,users[i].pin) == 0)
+		{
+			printf("PIN Correct. \n");
+			printf("Welcome, %s.It is a pleasure to see you :) \n", users[i].name);
+			return 1;
+		}
 	}
-	else
-	{
-		printf("PIN Incorrect. \n");
-		return 0;
-	}
+	printf("PIN Incorrect.\n");
+	return 0;
+
 }
 
 
 int main()
 {
-	struct user remi;
-	remi.id = 1;
-	strcpy(remi.name, "Remi");
-	strcpy(remi.pin, "0000");
-	remi.balance = 0;
-
-	struct user lisa;
-	lisa.id = 2;
-	strcpy(lisa.name, "Lisa");
-	strcpi(lisa.pin, "1234");
-	lisa.balance = 0;
-	
-	struct user romain;
-	romain.id = 3;
-	strcpy(romain.name, "Romain");
-	strcpy(romain.pin, "0123");
-	romain.balance = 0;
-
-	char *pins[3] = {remi.pin, lisa.pin, romain.pin};
-
-	char pin[4] = "0000";
 	struct user users[3];
-	// on a un tableau de struct user
-	// on tente de se rendre au 1ere index users[0]
-	// on tente d'afficher le nom : users[0].name
+	users[0].id = 1;
+	strcpy(users[0].name, "Remi");
+	strcpy(users[0].pin, "0000");
+	users[0].balance = 10000;
+	
+	users[1].id = 2;
+	strcpy(users[1].name, "Lisa");
+	strcpy(users[1].pin, "1234");
+	users[1].balance = 12150;
 
-	for (int i = 0; i < 3; i++)
-	{
-		scanf("%d %s", &users[i].id, users[i].name);
-	}
+	users[2].id = 2;
+	strcpy(users[2].name, "Romain");
+	strcpy(users[2].pin, "1702");
+	users[2].balance = 1000000;
+	
 
-	for (int i = 0; i<3; i++)
-	{
-		printf("User id :%d \n User's Name : %s \n", users[i].id, users[i].name);
-	}
+	verify_pin(users);
 
-
-//	printf("User Name : %s.\n", users[0].name);
-//	printf("Remi Name : %s. \n", remi.name);
-
-	//select(users, 1);
 	return 0;
-
 }
 
