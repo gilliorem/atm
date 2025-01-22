@@ -72,7 +72,17 @@ void withdraw(struct user* account, unsigned int amount)
 
 void display_menu()
 {
-	
+	int fin = 0;
+	while (!fin)
+	{
+		int c;
+		printf("Press '1' to withdraw\n"
+		"Press '2' to make a deposit.\n"
+		"Press '3' to check balance.\n"
+		"Press '4' to quit.\n");
+
+		c = getchar();
+
 }
 
 int verify_pin(struct user *users)
@@ -115,7 +125,8 @@ int main()
 	users[2].balance = 1000000;
 	
 
-	verify_pin(users);
+	if (verify_pin(users))
+		display_menu();
 
 	return 0;
 }
