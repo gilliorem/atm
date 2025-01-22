@@ -9,16 +9,25 @@ struct user {
 }; 
 
 
-
-void set_id(struct user* account, unsigned int id)
+// notre programme de la maniere suivante : press '1' to set/change your ID.
+// pouvoir verifier que l'id est unique. 
+void set_id(struct user* account)
 {
+	account->id = 0;
+	printf("Your current ID is : %d \n", account->id);
+	printf("Please Enter your New ID:\n");
+	unsigned int id = 0;
+	scanf("%d", &id);
 	if (id < 0)
 	{
 		printf("Error : id has to be greater than 0.\n");
 		return;
 	}
 	account->id = id;
+	printf("Your new ID is : %d.\n", account->id);
 }
+
+// faire un return 0 qui return au menu ?
 
 void change_pin(struct user* account, char *new_pin)
 {
@@ -111,7 +120,7 @@ int verify_pin(struct user *users)
 		if (strcmp(pin,users[i].pin) == 0)
 		{
 			printf("PIN Correct. \n");
-			printf("Welcome, %s.It is a pleasure to see you :) \n", users[i].name);
+			printf("Wedome, %s.It is a pleasure to see you :) \n", users[i].name);
 			return 0;
 		}
 	}
@@ -123,18 +132,22 @@ int verify_pin(struct user *users)
 
 int main()
 {
+	// initialisation d'un tableau de users;
 	struct user users[3];
+	//cree 3 users 
+
 	struct user remi;
-	set_id(&remi, 3);
+	set_id(&remi);
+	printf("Remi new ID : %d. \n", remi.id);
 
 	change_pin(&remi, "0123");
 
 	
-	printf("remi's balance : $%.2f\n", remi.balance);
+	//printf("remi's balance : $%.2f\n", remi.balance);
 	deposit(&remi, 300);
-	printf("remi's balance : $%.2f\n", remi.balance);
+//	printf("remi's balance : $%.2f\n", remi.balance);
 	withdraw(&remi, 140);
-	printf("remi's balance : $%.2f\n", remi.balance);
+//	printf("remi's balance : $%.2f\n", remi.balance);
 
 	
 	users[1].id = 2;
