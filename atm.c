@@ -10,19 +10,14 @@ struct user {
 
 
 
-unsigned int set_id(struct user* account)
+void set_id(struct user* account, unsigned int id)
 {
-	unsigned int new_id;
-	unsigned int previous_id = account->id;
-	printf("Enter your new id:");
-	new_id = scanf("%u", &account->id);	
-	if (new_id || account->id < 0)
+	if (id < 0)
 	{
 		printf("Error : id has to be greater than 0.\n");
-		return previous_id;
+		return;
 	}
-	new_id = account->id;
-	return new_id;
+	account->id = id;
 }
 
 void change_pin(struct user* account, char *new_pin)
@@ -62,15 +57,20 @@ void withdraw(struct user* account, unsigned int amount)
 		printf("amount has to be greater than 0.\n");
 		return ;
 	}
-	if (amount > account->balance)
+	else if (amount %10 != 0)
+	{
+		printf("Amount has to mutiple of 10. \n");
+		return;
+	}
+	else if (amount > account->balance)
 	{
 		printf("Sorry, the amount you wish to withdraw is greater than your current amount of money in your account.\n Please select an amount between $1 and $%f.", account->balance);
 		return;
 	}
-	account->balance = account->balance - amount;
+	account->balance -= amount;
 }
 
-void display_menu()
+void display_menu(struct user* account)
 {
 	int fin = 0;
 	while (!fin)
@@ -82,6 +82,21 @@ void display_menu()
 		"Press '4' to quit.\n");
 
 		c = getchar();
+		if (c != '\n' && c != EOF)
+		{
+			switch(c)
+			{
+				case '1':
+					//withdraw(account->balance);
+					break;
+				case '4':
+					fin = 1;
+					break;
+				default:
+					printf("choix errone.\n");
+			}
+		}
+	}
 
 }
 
@@ -97,11 +112,11 @@ int verify_pin(struct user *users)
 		{
 			printf("PIN Correct. \n");
 			printf("Welcome, %s.It is a pleasure to see you :) \n", users[i].name);
-			return 1;
+			return 0;
 		}
 	}
 	printf("PIN Incorrect.\n");
-	return 0;
+	return 1;
 
 }
 
@@ -109,10 +124,18 @@ int verify_pin(struct user *users)
 int main()
 {
 	struct user users[3];
-	users[0].id = 1;
-	strcpy(users[0].name, "Remi");
-	strcpy(users[0].pin, "0000");
-	users[0].balance = 10000;
+	struct user remi;
+	set_id(&remi, 3);
+
+	change_pin(&remi, "0123");
+
+	
+	printf("remi's balance : $%.2f\n", remi.balance);
+	deposit(&remi, 300);
+	printf("remi's balance : $%.2f\n", remi.balance);
+	withdraw(&remi, 140);
+	printf("remi's balance : $%.2f\n", remi.balance);
+
 	
 	users[1].id = 2;
 	strcpy(users[1].name, "Lisa");
@@ -125,8 +148,8 @@ int main()
 	users[2].balance = 1000000;
 	
 
-	if (verify_pin(users))
-		display_menu();
+	//if (!verify_pin(users))
+	//	display_menu(users[0]);
 
 	return 0;
 }
