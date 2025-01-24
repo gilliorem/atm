@@ -48,12 +48,10 @@ void change_pin(struct user* account)
 {
 	char pin[100] = "0000";
 	strcpy(account->pin, "0000");
-	printf("Current Pin is %s\n",pin);
+	printf("Current Pin is %s\n",account->pin);
 	printf("Enter new PIN\n");
 	fgets(pin,sizeof(pin),stdin);
 	pin[strcspn(pin, "\n")] = '\0';
-	printf("Pin contents: '%s'\n", pin);
-
 	
 	int i = 0;
 	while (pin[i] != '\0')
@@ -67,21 +65,44 @@ void change_pin(struct user* account)
 	}
 	if (strlen(pin) != 4)
 	{
-		printf("PIN length :%lu \n",strlen(pin));
 		printf("Error: PIN has to be 4-digit format.\n");
 		return;
 	}
 	strcpy(account->pin, pin);
+	printf("PIN changed Successfully.\nNew PIN :%s\n", account->pin);
 }
 
-void change_name(struct user* account, char *new_name)
+void change_name(struct user* account)
 {
-	if (strlen(new_name) <= 1)
+	char name[100];
+	strcpy(account->name, "user");
+	printf("Current Username : %s\n", account->name);
+	printf("Enter new Username :\n");
+	fgets(name,sizeof(name), stdin);
+	name[strcspn(name, "\n")] = '\0';
+	int i = 0;
+	while (name[i] != '\0') 
 	{
-		printf("Enter a valid name.\n");
+		if ((name[i] < 'A'|| name[i] > 'z')||(name[i] > 'Z' && name[i] < 'a'))
+		{
+			printf("Error : Name only can contain alphabetic characters\n");
+			return;
+		}
+		i++;
+	}
+	
+	if (strlen(name) <= 1)
+	{
+		printf("Error : Name needs to contain more than 1 character.\n");
 		return;
 	}
-	strcpy(account->name, new_name);
+	else if (strlen(name) > 30)
+	{
+		printf("Error : Name cannot exceed 30 characters\n");
+		return;
+	}
+	strcpy(account->name, name);
+	printf("User's new name : %s\n",account->name);
 }
 
 void deposit(struct user* account, unsigned int amount)
@@ -171,10 +192,9 @@ int main()
 
 	struct user remi;
 
-
-	printf("Remi's PIN : %s\n",remi.pin);
-	change_pin(&remi);
-	printf("%s's new PIN : %s\n",remi.name, remi.pin);
+	printf("User Name : %s\n",remi.name);
+	change_name(&remi);
+	printf("New user Name : %s\n",remi.name);
 
 	
 	//printf("remi's balance : $%.2f\n", remi.balance);
