@@ -20,12 +20,11 @@ void set_id2(struct user* account)
 	printf("current id : %d\n", account->id);
 	printf("Enter you new ID:");
 	fgets(buffer,10,stdin);
-	printf("%s\n", buffer);
-	// gerer les characteres blancs
 	int i = 0;
 	if (buffer[0] == '\n')
 	{
 		printf("no back to line char\n");
+		return;
 	}
 	while (buffer[i] != '\0')
 	{
@@ -45,40 +44,34 @@ void set_id2(struct user* account)
 	printf("New ID converted in int : %d \n", new_id);
 }
 
-void set_id(struct user* account)
+void change_pin(struct user* account)
 {
-	account->id = 0;
-	printf("Your current ID is : %d \n", account->id);
-	printf("Please Enter your New ID:\n");
-	unsigned int id = 0;
-	scanf("%d", &id);
-	if (id < 0 )
+	char pin[100] = "0000";
+	strcpy(account->pin, "0000");
+	printf("Current Pin is %s\n",pin);
+	printf("Enter new PIN\n");
+	fgets(pin,sizeof(pin),stdin);
+	pin[strcspn(pin, "\n")] = '\0';
+	printf("Pin contents: '%s'\n", pin);
+
+	
+	int i = 0;
+	while (pin[i] != '\0')
 	{
-		printf("Error : ID has to be one positive integer in between 0 and 4294967295.\n");
-		return;
-	}
-	switch (id)
-	{
-		case ' ':
-		case '\n':
-		case '\t':
-			printf("Error : ID has to be a positive integer between 0 and 4294967295.\n");
+		if (pin[i] < '0' || pin[i] > '9')
+		{
+			printf("Error : PIN has to be a 4-digit format.\n");
 			return;
+		}
+		i++;
 	}
-	account->id = id;
-	printf("Your new ID is : %d.\n", account->id);
-}
-
-// faire un return 0 qui return au menu ?
-
-void change_pin(struct user* account, char *new_pin)
-{
-	if (strlen(new_pin) != 4)
+	if (strlen(pin) != 4)
 	{
-		printf("Enter a 4 digit pin code\n");
+		printf("PIN length :%lu \n",strlen(pin));
+		printf("Error: PIN has to be 4-digit format.\n");
 		return;
 	}
-	strcpy(account->pin, new_pin);
+	strcpy(account->pin, pin);
 }
 
 void change_name(struct user* account, char *new_name)
@@ -177,16 +170,17 @@ int main()
 	struct user users[3];
 
 	struct user remi;
-	set_id2(&remi);
-	printf("Remi new ID : %d. \n", remi.id);
 
-	change_pin(&remi, "0123");
+
+	printf("Remi's PIN : %s\n",remi.pin);
+	change_pin(&remi);
+	printf("%s's new PIN : %s\n",remi.name, remi.pin);
 
 	
 	//printf("remi's balance : $%.2f\n", remi.balance);
-	deposit(&remi, 300);
+//	deposit(&remi, 300);
 //	printf("remi's balance : $%.2f\n", remi.balance);
-	withdraw(&remi, 140);
+//	withdraw(&remi, 140);
 //	printf("remi's balance : $%.2f\n", remi.balance);
 
 	
