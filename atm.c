@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 struct user {
 	unsigned int id;
@@ -11,6 +12,39 @@ struct user {
 
 // notre programme de la maniere suivante : press '1' to set/change your ID.
 // pouvoir verifier que l'id est unique. 
+
+void set_id2(struct user* account)
+{
+	account->id = 0;
+	char buffer[10];
+	printf("current id : %d\n", account->id);
+	printf("Enter you new ID:");
+	fgets(buffer,10,stdin);
+	printf("%s\n", buffer);
+	// gerer les characteres blancs
+	int i = 0;
+	if (buffer[0] == '\n')
+	{
+		printf("no back to line char\n");
+	}
+	while (buffer[i] != '\0')
+	{
+		switch (buffer[i])
+		{
+			case ' ':
+			case '\t':
+				printf("no white space\n");
+				return;
+		}
+		i++;
+	}
+	printf("string that needs to be converted into unsigned int:%s\n", buffer);
+	unsigned int new_id = 0;
+	new_id = atoi(buffer);
+	account->id = new_id;
+	printf("New ID converted in int : %d \n", new_id);
+}
+
 void set_id(struct user* account)
 {
 	account->id = 0;
@@ -18,10 +52,18 @@ void set_id(struct user* account)
 	printf("Please Enter your New ID:\n");
 	unsigned int id = 0;
 	scanf("%d", &id);
-	if (id < 0)
+	if (id < 0 )
 	{
-		printf("Error : id has to be greater than 0.\n");
+		printf("Error : ID has to be one positive integer in between 0 and 4294967295.\n");
 		return;
+	}
+	switch (id)
+	{
+		case ' ':
+		case '\n':
+		case '\t':
+			printf("Error : ID has to be a positive integer between 0 and 4294967295.\n");
+			return;
 	}
 	account->id = id;
 	printf("Your new ID is : %d.\n", account->id);
@@ -132,12 +174,10 @@ int verify_pin(struct user *users)
 
 int main()
 {
-	// initialisation d'un tableau de users;
 	struct user users[3];
-	//cree 3 users 
 
 	struct user remi;
-	set_id(&remi);
+	set_id2(&remi);
 	printf("Remi new ID : %d. \n", remi.id);
 
 	change_pin(&remi, "0123");
