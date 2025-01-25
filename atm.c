@@ -105,12 +105,44 @@ void change_name(struct user* account)
 	printf("User's new name : %s\n",account->name);
 }
 
-void deposit(struct user* account, unsigned int amount)
+void deposit(struct user* account)
 {
+	account->balance = 0;
+	char buffer[10];
+	printf("Current balance : $%.2f\n", account->balance);
+	printf("Enter deposit amount:\n");
+	fgets(buffer,10,stdin);
+	int i = 0;
+	if (buffer[0] == '\n')
+	{
+		printf("no back to line char\n");
+		return;
+	}
+	while (buffer[i] != '\0')
+	{
+		switch (buffer[i])
+		{
+			case ' ':
+			case '\t':
+				printf("no white space\n");
+				return;
+		}
+		i++;
+	}
+	printf("string that needs to be converted into unsigned int:%s\n", buffer);
+	unsigned int amount = 0;
+	amount = atoi(buffer);
+	account->id = amount;
+	printf("Amount converted in int : %d \n", amount);
 	if (amount < 0)
 	{
 		printf("amount has to be greater than 0.\n");
 		return ;
+	}
+	else if (amount %10 != 0)
+	{
+		printf("Error : Deposit amount must be a mutliple of ten.\n");
+		return;
 	}
 	account->balance = account->balance + amount;
 }
@@ -192,12 +224,10 @@ int main()
 
 	struct user remi;
 
-	printf("User Name : %s\n",remi.name);
-	change_name(&remi);
-	printf("New user Name : %s\n",remi.name);
-
+	printf("remi's balance : $%.2f\n", remi.balance);
+	deposit(&remi);
+	printf("remi's balance : $%.2f\n", remi.balance);
 	
-	//printf("remi's balance : $%.2f\n", remi.balance);
 //	deposit(&remi, 300);
 //	printf("remi's balance : $%.2f\n", remi.balance);
 //	withdraw(&remi, 140);
