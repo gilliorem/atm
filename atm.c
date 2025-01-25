@@ -13,7 +13,7 @@ struct user {
 // notre programme de la maniere suivante : press '1' to set/change your ID.
 // pouvoir verifier que l'id est unique. 
 
-void set_id2(struct user* account)
+void set_id(struct user* account)
 {
 	account->id = 0;
 	char buffer[10];
@@ -138,7 +138,7 @@ void deposit(struct user* account)
 	printf("string that needs to be converted into unsigned int:%s\n", buffer);
 	unsigned int amount = 0;
 	amount = atoi(buffer);
-	account->id = amount;
+	account->balance = amount;
 	printf("Amount converted in int : %d \n", amount);
 	if (amount < 0)
 	{
@@ -185,7 +185,7 @@ void withdraw(struct user* account)
 	printf("string that needs to be converted into unsigned int:%s\n", buffer);
 	unsigned int amount = 0;
 	amount = atoi(buffer);
-	account->id = amount;
+	account->balance = amount;
 	printf("Amount converted in int : %d \n", amount);
 	if (amount < 0)
 	{
@@ -208,33 +208,47 @@ void withdraw(struct user* account)
 
 void display_menu(struct user* account)
 {
-	int fin = 0;
-	while (!fin)
+	int choice = -1;
+	
+	printf("Press '1' to withdraw\n"
+			"Press '2' to make a deposit.\n"
+			"Press '3' to set a new ID.\n"
+			"Press '4' to change PIN.\n"
+			"Press '5' to change name.\n"
+			"Press '6' to quit.\n");
+	int flag = 0;
+	while (!flag)
 	{
-		int c;
-		printf("Press '1' to withdraw\n"
-		"Press '2' to make a deposit.\n"
-		"Press '3' to check balance.\n"
-		"Press '4' to quit.\n");
-
-		c = getchar();
-		if (c != '\n' && c != EOF)
+		scanf("%d",&choice);
+		
+		switch(choice)
 		{
-			switch(c)
-			{
-				case '1':
-					//withdraw(account->balance);
-					break;
-				case '4':
-					fin = 1;
-					break;
-				default:
-					printf("choix errone.\n");
-			}
+			case 1:
+				withdraw(account);
+				break;
+			case 2:
+				deposit(account);
+				break;
+			case 3:
+				set_id(account);
+				break;
+			case 4:
+				change_pin(account);
+				break;
+			case 5:
+				change_name(account);
+				break;
+			case 6:
+				flag = 1;
+				return;
+			default:
+			printf("Invalid input.\n");
+			break;
 		}
-	}
 
+	}
 }
+
 
 int verify_pin(struct user *users)
 {
@@ -263,11 +277,7 @@ int main()
 
 	struct user remi;
 
-	printf("remi's balance : $%.2f\n", remi.balance);
-	deposit(&remi);
-	printf("remi's balance : $%.2f\n", remi.balance);
-	withdraw(&remi);
-	printf("remi's balance : $%.2f\n", remi.balance);
+	display_menu(&remi);
 	
 //	deposit(&remi, 300);
 //	printf("remi's balance : $%.2f\n", remi.balance);
@@ -287,7 +297,6 @@ int main()
 	
 
 	//if (!verify_pin(users))
-	//	display_menu(users[0]);
 
 	return 0;
 }
