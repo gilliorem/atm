@@ -112,6 +112,7 @@ void deposit(struct user* account)
 	printf("Current balance : $%.2f\n", account->balance);
 	printf("Enter deposit amount:\n");
 	fgets(buffer,10,stdin);
+	buffer[strcspn(buffer, "\n")] = '\0';
 	int i = 0;
 	if (buffer[0] == '\n')
 	{
@@ -120,6 +121,11 @@ void deposit(struct user* account)
 	}
 	while (buffer[i] != '\0')
 	{
+		if (buffer[i] < '0' || buffer[i] > '9')
+		{
+			printf("Error : input has to be numeric value.\n");
+			return;
+		}
 		switch (buffer[i])
 		{
 			case ' ':
@@ -147,8 +153,40 @@ void deposit(struct user* account)
 	account->balance = account->balance + amount;
 }
 
-void withdraw(struct user* account, unsigned int amount)
+void withdraw(struct user* account)
 {
+	char buffer[10];
+	printf("Current balance : $%.2f\n", account->balance);
+	printf("Enter withdraw amount:\n");
+	fgets(buffer,10,stdin);
+	buffer[strcspn(buffer, "\n")] = '\0';
+	int i = 0;
+	if (buffer[0] == '\n')
+	{
+		printf("no back to line char\n");
+		return;
+	}
+	while (buffer[i] != '\0')
+	{
+		if (buffer[i] < '0' || buffer[i] > '9')
+		{
+			printf("Error : withdraw amount has to be numerical value.\n");
+			return;
+		}
+		switch (buffer[i])
+		{
+			case ' ':
+			case '\t':
+				printf("no white space\n");
+				return;
+		}
+		i++;
+	}
+	printf("string that needs to be converted into unsigned int:%s\n", buffer);
+	unsigned int amount = 0;
+	amount = atoi(buffer);
+	account->id = amount;
+	printf("Amount converted in int : %d \n", amount);
 	if (amount < 0)
 	{
 		printf("amount has to be greater than 0.\n");
@@ -156,16 +194,17 @@ void withdraw(struct user* account, unsigned int amount)
 	}
 	else if (amount %10 != 0)
 	{
-		printf("Amount has to mutiple of 10. \n");
+		printf("Error : withdraw amount must be a mutliple of ten.\n");
 		return;
 	}
 	else if (amount > account->balance)
 	{
-		printf("Sorry, the amount you wish to withdraw is greater than your current amount of money in your account.\n Please select an amount between $1 and $%f.", account->balance);
-		return;
+		printf("Error: the amount to withdraw can't be greater that your current balance.\n");
+	return;
 	}
 	account->balance -= amount;
 }
+
 
 void display_menu(struct user* account)
 {
@@ -226,6 +265,8 @@ int main()
 
 	printf("remi's balance : $%.2f\n", remi.balance);
 	deposit(&remi);
+	printf("remi's balance : $%.2f\n", remi.balance);
+	withdraw(&remi);
 	printf("remi's balance : $%.2f\n", remi.balance);
 	
 //	deposit(&remi, 300);
