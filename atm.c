@@ -42,8 +42,30 @@ void set_id(struct user* account)
 	new_id = atoi(buffer);
 	account->id = new_id;
 	printf("New ID converted in int : %d \n", new_id);
+	// on a besoin de se rendre a un endroit specific dans file.
+	FILE *fp = fopen("users.txt", "w");
+	fprintf(fp, "%d", new_id);
+	fclose(fp);
 }
 
+void set_users()
+{
+	FILE *fp = fopen("users.txt", "w");
+	fprintf(fp, "User1\nID: 01\nPIN: 0000\nName: Remi\nBalance: $42\n");
+	fclose(fp);
+}
+void modify_users_file()
+{
+	FILE *fp = fopen("users.txt", "r");
+	int c;
+	while ((c = getc(fp)) != EOF)
+	{
+		if (c == '4')
+		{
+			c = '5';
+		}
+	}
+}
 void change_pin(struct user* account)
 {
 	char pin[100] = "0000";
@@ -205,6 +227,11 @@ void withdraw(struct user* account)
 	account->balance -= amount;
 }
 
+void ft_test(struct user* account)
+{
+	char choice[100]; 
+	withdraw(account);
+}
 
 void display_menu(struct user* account)
 {
@@ -237,6 +264,9 @@ void display_menu(struct user* account)
 				break;
 			case 5:
 				change_name(account);
+				break;
+			case 7:
+				ft_test(account);
 				break;
 			case 6:
 				flag = 1;
@@ -277,8 +307,7 @@ int main()
 
 	struct user remi;
 
-	display_menu(&remi);
-	
+	set_users();
 //	deposit(&remi, 300);
 //	printf("remi's balance : $%.2f\n", remi.balance);
 //	withdraw(&remi, 140);
