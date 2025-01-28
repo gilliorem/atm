@@ -280,34 +280,43 @@ void display_menu(struct user* account)
 }
 
 
-int verify_pin(struct user *users)
+void verify_pin()
 {
-	printf("Enter your PIN.\n");
-	char pin[4];
-	scanf("%s", pin);
-	printf("PIN ENTER: %s\n", pin);
-	for (int i = 0; i <= 3; i++)
-	{
-		if (strcmp(pin,users[i].pin) == 0)
-		{
-			printf("PIN Correct. \n");
-			printf("Wedome, %s.It is a pleasure to see you :) \n", users[i].name);
-			return 0;
-		}
-	}
-	printf("PIN Incorrect.\n");
-	return 1;
+	// mettre toute la data dans 1 file users.txt ou faire un file par user : 01.txt 02.txt
+	// 1er check : entre ID (qui est le nom du file)
+	// une fois le nom du file entre, entre le PIN associe a ce file/user
+	// 1 entrer PIN
+	// scaner PIN et le sauvegarder dans une variable
+	// le comparer avec le PIN dans le fichier romain.txt
+	// 	ouvrir en mode read le fichier romain.txt
+	// 	parcourir le fichier jusqu'a trouver la valeur de PIN
+	// 	utiliser fscanf pour preciser les types des variables ?...
+	//
+	printf("Enter you ID starts with 'U':\n");
+	char id_buffer[256];
+	scanf("%s", id_buffer);
+	char* file = id_buffer;
+	FILE* fp = fopen(file, "r");
 
-}
+	if(strcmp(id_buffer, file) == 0)
+	{
+		printf("Enter your PIN.\n");
+		char buffer[256];
+		scanf("%s", buffer);
+		printf("PIN ENTER: %s\n", buffer);
+	}
+}	
 
 
 int main()
 {
+
+
 	struct user users[3];
 
-	struct user remi;
+	struct user romain;
+	verify_pin();
 
-	set_users();
 //	deposit(&remi, 300);
 //	printf("remi's balance : $%.2f\n", remi.balance);
 //	withdraw(&remi, 140);
