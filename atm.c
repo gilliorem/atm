@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+void (user users[], int length, struct user **active_user);
+
 struct user {
 	unsigned int id;
 	char name[30];
@@ -48,24 +50,7 @@ void set_id(struct user* account)
 	fclose(fp);
 }
 
-void set_users()
-{
-	FILE *fp = fopen("users.txt", "w");
-	fprintf(fp, "User1\nID: 01\nPIN: 0000\nName: Remi\nBalance: $42\n");
-	fclose(fp);
-}
-void modify_users_file()
-{
-	FILE *fp = fopen("users.txt", "r");
-	int c;
-	while ((c = getc(fp)) != EOF)
-	{
-		if (c == '4')
-		{
-			c = '5';
-		}
-	}
-}
+
 void change_pin(struct user* account)
 {
 	char pin[100] = "0000";
@@ -96,7 +81,7 @@ void change_pin(struct user* account)
 
 void change_name(struct user* account)
 {
-	char name[100];
+	char name[64];
 	strcpy(account->name, "user");
 	printf("Current Username : %s\n", account->name);
 	printf("Enter new Username :\n");
@@ -230,10 +215,75 @@ void withdraw(struct user* account)
 void ft_test(struct user* account)
 {
 	char choice[100]; 
-	withdraw(account);
 }
 
-void display_menu(struct user* account)
+void display_menu_user(struct user* user)
+{
+	printf("%s, What do you want to do ?\n-1Withdraw\n2-Rename\n3-Quit\n", user->name);
+	int a;
+	scanf("%i", &a);
+
+	if (a == 1)
+		printf("withdraw...");
+	else if (a == 2)
+	{
+		char char_name[64];
+		printf("Enter user name\n");
+		scanf("%s", char_name);
+		strcpy(user->name, char_name);
+	}
+	else if (a == 3)
+		exit(0);
+}
+char char_name[64];
+printf("nter user name\n");
+scanf("%s", char_name);
+strcpy(user->name, char_name);
+}
+else if (a == 3)
+	exit(0);
+	}
+		
+
+
+void display_menu(struct user users[], int length, struct user **active_user)
+{
+	// on prend 
+	// cest quoi la logique du code :
+	// cest de select un activ user. de pointer sur un activ user
+	// pour faire la verification on scan un id temp
+	// on verifie avec les id des users en bouclant sur users[]
+	// on attribue une adresse (endroit dans la liste a users[i] : si c'est le bon id.
+	
+	// sinon id est NULL > on informe le user que l'ID entre est nul, et on recommence. (on retombe dans la seconde boucle de if !*active_user
+	// sinon :
+	// on affiche le menu > display_menu(*active_user) > qui du coup cette fois ci va prendre en agument le *active_user.
+
+	while (1)
+	{
+		if (!*active_user)
+		{
+			int ask_id = -1;
+			scanf(%d, ask_id);
+			for (unsigned int i = 0; i < length; i++)
+			{
+				if (asked_id == users[i].id)
+				{
+					*active_user = &user[i];
+					break;
+				}
+			}
+			if (*active_user == NULL)
+				printf("ID %d is not found as a user, please try again.\n",asked_id)
+			else
+				display_menu_user(*ative_user);
+		}
+	}
+}
+
+		
+
+void display_menu()
 {
 	int choice = -1;
 	
@@ -280,7 +330,7 @@ void display_menu(struct user* account)
 }
 
 
-void verify_pin()
+void verify_pin(char users)
 {
 	// mettre toute la data dans 1 file users.txt ou faire un file par user : 01.txt 02.txt
 	// 1er check : entre ID (qui est le nom du file)
@@ -292,19 +342,7 @@ void verify_pin()
 	// 	parcourir le fichier jusqu'a trouver la valeur de PIN
 	// 	utiliser fscanf pour preciser les types des variables ?...
 	//
-	printf("Enter you ID starts with 'U':\n");
-	char id_buffer[256];
-	scanf("%s", id_buffer);
-	char* file = id_buffer;
-	FILE* fp = fopen(file, "r");
-
-	if(strcmp(id_buffer, file) == 0)
-	{
-		printf("Enter your PIN.\n");
-		char buffer[256];
-		scanf("%s", buffer);
-		printf("PIN ENTER: %s\n", buffer);
-	}
+	
 }	
 
 
@@ -314,8 +352,6 @@ int main()
 
 	struct user users[3];
 
-	struct user romain;
-	verify_pin();
 
 //	deposit(&remi, 300);
 //	printf("remi's balance : $%.2f\n", remi.balance);
@@ -327,14 +363,12 @@ int main()
 	strcpy(users[1].name, "Lisa");
 	strcpy(users[1].pin, "1234");
 	users[1].balance = 12150;
-
-	users[2].id = 2;
+users[2].id = 2;
 	strcpy(users[2].name, "Romain");
 	strcpy(users[2].pin, "1702");
 	users[2].balance = 1000000;
 	
-
-	//if (!verify_pin(users))
+	display_menu();
 
 	return 0;
 }
