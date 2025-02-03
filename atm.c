@@ -7,7 +7,7 @@ void (user users[], int length, struct user **active_user);
 struct user {
 	unsigned int id;
 	char name[30];
-	char pin[4];
+	char pin[5];
 	float balance;
 }; 
 
@@ -17,11 +17,10 @@ struct user {
 
 void set_id(struct user* account)
 {
-	account->id = 0;
 	char buffer[10];
-	printf("current id : %d\n", account->id);
+	printf("Current ID : %d\n", account->id);
 	printf("Enter you new ID:");
-	fgets(buffer,10,stdin);
+	fgets(buffer,sizeof(buffer), stdin);
 	int i = 0;
 	if (buffer[0] == '\n')
 	{
@@ -234,15 +233,15 @@ void display_menu_user(struct user* user)
 	}
 	else if (a == 3)
 		exit(0);
+
+	char char_name[64];
+	printf("nter user name\n");
+	scanf("%s", char_name);
+	strcpy(user->name, char_name);
+
+	else if (a == 3)
+		exit(0);
 }
-char char_name[64];
-printf("nter user name\n");
-scanf("%s", char_name);
-strcpy(user->name, char_name);
-}
-else if (a == 3)
-	exit(0);
-	}
 		
 
 
@@ -258,10 +257,10 @@ void display_menu(struct user users[], int length, struct user **active_user)
 	// sinon id est NULL > on informe le user que l'ID entre est nul, et on recommence. (on retombe dans la seconde boucle de if !*active_user
 	// sinon :
 	// on affiche le menu > display_menu(*active_user) > qui du coup cette fois ci va prendre en agument le *active_user.
-
-	while (1)
+	int flag = 0;
+	while (!flag)
 	{
-		if (!*active_user)
+		if (*active_user == NULL)
 		{
 			int ask_id = -1;
 			scanf(%d, ask_id);
@@ -281,9 +280,8 @@ void display_menu(struct user users[], int length, struct user **active_user)
 	}
 }
 
-		
 
-void display_menu()
+void display_menu(struct user *active_user)
 {
 	int choice = -1;
 	
@@ -301,22 +299,22 @@ void display_menu()
 		switch(choice)
 		{
 			case 1:
-				withdraw(account);
+				withdraw(active_user);
 				break;
 			case 2:
-				deposit(account);
+				deposit(active_user);
 				break;
 			case 3:
-				set_id(account);
+				set_id(active_user);
 				break;
 			case 4:
-				change_pin(account);
+				change_pin(active_user);
 				break;
 			case 5:
-				change_name(account);
+				change_name(active_user);
 				break;
 			case 7:
-				ft_test(account);
+				ft_test(active_user);
 				break;
 			case 6:
 				flag = 1;
