@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-void (user users[], int length, struct user **active_user);
 
 struct user {
 	unsigned int id;
@@ -11,6 +10,8 @@ struct user {
 	float balance;
 }; 
 
+
+void display_user_menu(struct user* active_user);
 
 // notre programme de la maniere suivante : press '1' to set/change your ID.
 // pouvoir verifier que l'id est unique. 
@@ -211,39 +212,6 @@ void withdraw(struct user* account)
 	account->balance -= amount;
 }
 
-void ft_test(struct user* account)
-{
-	char choice[100]; 
-}
-
-void display_menu_user(struct user* user)
-{
-	printf("%s, What do you want to do ?\n-1Withdraw\n2-Rename\n3-Quit\n", user->name);
-	int a;
-	scanf("%i", &a);
-
-	if (a == 1)
-		printf("withdraw...");
-	else if (a == 2)
-	{
-		char char_name[64];
-		printf("Enter user name\n");
-		scanf("%s", char_name);
-		strcpy(user->name, char_name);
-	}
-	else if (a == 3)
-		exit(0);
-
-	char char_name[64];
-	printf("nter user name\n");
-	scanf("%s", char_name);
-	strcpy(user->name, char_name);
-
-	else if (a == 3)
-		exit(0);
-}
-		
-
 
 void display_menu(struct user users[], int length, struct user **active_user)
 {
@@ -263,25 +231,25 @@ void display_menu(struct user users[], int length, struct user **active_user)
 		if (*active_user == NULL)
 		{
 			int ask_id = -1;
-			scanf(%d, ask_id);
+			scanf("%d", &ask_id);
 			for (unsigned int i = 0; i < length; i++)
 			{
-				if (asked_id == users[i].id)
+				if (ask_id == users[i].id)
 				{
-					*active_user = &user[i];
+					*active_user = &users[i];
 					break;
 				}
 			}
 			if (*active_user == NULL)
-				printf("ID %d is not found as a user, please try again.\n",asked_id)
+				printf("ID %d is not found as a user, please try again.\n",ask_id);
 			else
-				display_menu_user(*ative_user);
+				display_user_menu(*active_user);
 		}
 	}
 }
 
 
-void display_menu(struct user *active_user)
+void display_user_menu(struct user *active_user)
 {
 	int choice = -1;
 	
@@ -328,8 +296,7 @@ void display_menu(struct user *active_user)
 }
 
 
-void verify_pin(char users)
-{
+//void verify_pin(char users)
 	// mettre toute la data dans 1 file users.txt ou faire un file par user : 01.txt 02.txt
 	// 1er check : entre ID (qui est le nom du file)
 	// une fois le nom du file entre, entre le PIN associe a ce file/user
@@ -341,7 +308,6 @@ void verify_pin(char users)
 	// 	utiliser fscanf pour preciser les types des variables ?...
 	//
 	
-}	
 
 
 int main()
@@ -350,13 +316,6 @@ int main()
 
 	struct user users[3];
 
-
-//	deposit(&remi, 300);
-//	printf("remi's balance : $%.2f\n", remi.balance);
-//	withdraw(&remi, 140);
-//	printf("remi's balance : $%.2f\n", remi.balance);
-
-	
 	users[1].id = 2;
 	strcpy(users[1].name, "Lisa");
 	strcpy(users[1].pin, "1234");
@@ -366,7 +325,8 @@ users[2].id = 2;
 	strcpy(users[2].pin, "1702");
 	users[2].balance = 1000000;
 	
-	display_menu();
+	struct user lisa;
+	display_menu(users, 3, &lisa);
 
 	return 0;
 }
