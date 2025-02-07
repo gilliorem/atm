@@ -44,11 +44,11 @@ void display_user_menu()
 			printf("Wrong PIN.\n%d tries left before logout\n",wrong_pin_counter);
 			if (wrong_pin_counter == 0)	
 			{
-				printf("Logout");
+				write(1,"Logout",6);
 				for (int i = 0; i < 3; i++)
 				{
 					sleep(1);
-					printf(".");
+					write(1,".",1);
 				}
 				printf("\n");
 				display_main_menu();
