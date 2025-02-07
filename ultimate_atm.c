@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 struct user 
 {
@@ -12,48 +13,68 @@ struct user
 
 struct user users[3];
 
+void display_main_menu();
 struct user* active_user = NULL;
 
 void display_user_menu()
 {
 	printf("Welcome %s\n", active_user->name);
-	printf("Enter your PIN:");
 
 	unsigned int asked_pin = 0;
 	unsigned int choice = 0;
-	scanf("%d", &asked_pin);
-	if (asked_pin == active_user->pin)
+	unsigned wrong_pin_counter = 3;
+	while (choice != 6)
 	{
-		printf("Press 1 to see current balance.\n");
-		scanf("%d", &choice);
-		if (choice == 1)
+		printf("Enter your PIN:");
+		scanf("%d", &asked_pin);
+		if (asked_pin == active_user->pin)
 		{
-			printf("PIN Correct.\n");
-			printf("ID %d\nYour current balance is :$%.2f\n", active_user->id, active_user->balance);
-			return;
+			printf("Press 1 to see current balance.\n");
+			scanf("%d", &choice);
+			if (choice == 1)
+			{
+				printf("PIN Correct.\n");
+				printf("ID %d\nYour current balance is :$%.2f\n", active_user->id, active_user->balance);
+				return;
+			}
+		}
+		else
+		{
+			--wrong_pin_counter;
+			printf("Wrong PIN.\n%d tries left before logout\n",wrong_pin_counter);
+			if (wrong_pin_counter == 0)	
+			{
+				printf("Logout");
+				for (int i = 0; i < 3; i++)
+				{
+					sleep(1);
+					printf(".");
+				}
+				printf("\n");
+				display_main_menu();
+			}
 		}
 	}
-	else
-		printf("Wrong PIN.\n");
-
-	
 }
 
 void display_main_menu()
 {
-	printf("Enter your ID:\n");
 	int asked_id = 0;
-	scanf("%d",&asked_id);
-	for (int i = 0; i < 3; i++)
+	while (1)
 	{
-		if (asked_id == users[i].id)
+		printf("Enter your ID:\n");
+		scanf("%d",&asked_id);
+		for (int i = 0; i < 3; i++)
 		{
-			active_user = &users[i];
-			display_user_menu();
-			return;
+			if (asked_id == users[i].id)
+			{
+				active_user = &users[i];
+				display_user_menu();
+				return;
+			}
 		}
+		printf("User with ID %d not found. \n", asked_id);  
 	}
-	printf("User with ID %d not found. \n", asked_id);  
 }
 
 int main ()
