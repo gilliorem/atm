@@ -70,7 +70,8 @@ void display_main_menu()
 			{
 				active_user = &users[i];
 				display_user_menu();
-				return;
+				sleep(10);
+				printf("Exit.\n");
 			}
 		}
 		printf("User with ID %d not found. \n", asked_id);  
